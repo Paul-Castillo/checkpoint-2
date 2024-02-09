@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" id="input" placeholder="buscar cartas" />
+    <div id="container"></div>
+  </body>
+
+  <script>
+    //Crear una página web que utilice la API de Rick y Morty para mostrar cartas de personajes.
+    //La página debe tener un filtro de búsqueda que permita al usuario buscar personajes por nombre.
+
+    const container = document.getElementById("container");
+
+    async function buscarNombres(data) {
+      try {
+        const res = await fetch(
+          `https://rickandmortyapi.com/api/character/?name=${data}`
+        );
+        const arrJson = await res.json();
+        console.log(arrJson);
+
+        arrJson.results.forEach((element) => {
+          let card = document.createElement("div")
+          let name = document.createElement("h3");
+          name.innerText = element.name;
+          let img = document.createElement("img");
+          img.src = element.image;
+          card.appendChild(name);
+          card.appendChild(img);
+          container.appendChild(card)
+
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    const input = document.getElementById("input");
+
+    input.addEventListener("input", (event) => {
+      const datos = event.target.value;
+      if (datos.length > 0) {
+        buscarNombres(datos);
+      } else {
+        container.innerHTML = "";
+      }
+    });
+  </script>
+</html>
